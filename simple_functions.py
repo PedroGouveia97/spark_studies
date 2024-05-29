@@ -3,7 +3,6 @@
 from pyspark.sql import SparkSession
 import pyspark.sql.functions as F
 import os
-import re
 
 # %%
 #create pyspark session
@@ -33,13 +32,13 @@ df_movie.filter(df_movie.votes_int > 500).show()
 
 # %%
 #get only the most voted
-df_max = df_movie.agg(max('votes_int'))
+df_max = df_movie.agg(F.max('votes_int'))
 max_value = df_max.collect()[0][0]
 df_movie.filter(df_movie.votes_int == max_value).show()
 
 # %%
 #count cetegories by order
-df_movie.groupBy('genre').count().orderBy(col('count').desc()).show(truncate=False)
+df_movie.groupBy('genre').count().orderBy(F.col('count').desc()).show(truncate=False)
 
 # %%
 #in filter
