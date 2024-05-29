@@ -36,17 +36,35 @@ while True:
                                                                'data': f'fields age_ratings,aggregated_rating,aggregated_rating_count,alternative_names,artworks,bundles,category,checksum,collection,collections,cover,created_at,dlcs,expanded_games,expansions,external_games,first_release_date,follows,forks,franchise,franchises,game_engines,game_localizations,game_modes,genres,hypes,involved_companies,keywords,language_supports,multiplayer_modes,name,parent_game,platforms,player_perspectives,ports,rating,rating_count,release_dates,remakes,remasters,screenshots,similar_games,slug,standalone_expansions,status,storyline,summary,tags,themes,total_rating,total_rating_count,updated_at,url,version_parent,version_title,videos,websites; limit 500; offset {offset};'})
         offset += 500
         status_code = resp_api.status_code
-        if(status_code == 200):
-                json_api = json.loads(resp_api.text)
-
+        json_api = json.loads(resp_api.text)
+        n_games = len(json_api)
+        if n_games > 0:
                 for row in json_api:
                         merge_json.append(row)
-
         else:
-                print(resp_api)
-                print(status_code)
                 break
-                
+# %%
+
+# %%
+# File name
+file_name = f'{path}\data\igdb_output.json'
+
+# Step 1: Read existing data
+if os.path.exists(file_name):
+    with open(file_name, 'r') as file:
+        existing_data = json.load(file)
+else:
+    existing_data = []
+
+# Step 2: Append new data
+existing_data.extend(merge_json)
+
+# Step 3: Write updated list to file
+with open(file_name, 'w') as file:
+    json.dump(existing_data, file, indent=4)
+
+print(f"New JSON objects appended to {file_name}")
+
 # %%
 #query p/ pegar apenas novos inputs da API
 #criar dataframe com dados salvos
