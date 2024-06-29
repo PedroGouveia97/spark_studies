@@ -6,6 +6,7 @@ import os
 
 # %%
 #create pyspark session
+
 spark = SparkSession.builder\
         .master('local')\
         .appName('sparkcolab')\
@@ -69,4 +70,3 @@ df_full =       df_name.join(df_feedback, df_name.id == df_feedback.id, 'left')\
 
 # %%
 df_full.show() 
-# %%
